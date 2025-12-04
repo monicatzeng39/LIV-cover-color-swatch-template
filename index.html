@@ -100,26 +100,36 @@
             font-weight: 400;
         }
 
+        /* ===== 美化色塊 UI ===== */
         .color-input-container {
             position: relative;
             width: 100%;
-            height: 45px;
-            border-radius: 8px;
-            overflow: hidden;
+            height: 48px;
+            border-radius: 12px;
             border: 1px solid var(--border-color);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            overflow: hidden;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
         }
 
-        input[type="color"] {
-            -webkit-appearance: none;
-            border: none;
+        .color-display {
             width: 100%;
             height: 100%;
-            padding: 0;
-            margin: 0;
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .color-input-container input[type="color"] {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
             cursor: pointer;
-            transform: scale(1.2);
-            transform-origin: center;
         }
 
         /* SVG 樣式 */
@@ -198,7 +208,7 @@
 
 <body>
 
-<h2>LIV 車衣配色模擬 </h2>
+<h2>LIV 車衣配色模擬</h2>
 
 <div class="layout-container">
 
@@ -352,6 +362,7 @@
                 <span class="color-code" id="code-body">#402C54</span>
             </div>
             <div class="color-input-container">
+                <div class="color-display"></div>
                 <input type="color" id="input-body" value="#402C54">
             </div>
         </div>
@@ -362,6 +373,7 @@
                 <span class="color-code" id="code-sleeve">#79521F</span>
             </div>
             <div class="color-input-container">
+                <div class="color-display"></div>
                 <input type="color" id="input-sleeve" value="#79521F">
             </div>
         </div>
@@ -372,6 +384,7 @@
                 <span class="color-code" id="code-side">#79521F</span>
             </div>
             <div class="color-input-container">
+                <div class="color-display"></div>
                 <input type="color" id="input-side" value="#79521F">
             </div>
         </div>
@@ -382,6 +395,7 @@
                 <span class="color-code" id="code-collar">#402C54</span>
             </div>
             <div class="color-input-container">
+                <div class="color-display"></div>
                 <input type="color" id="input-collar" value="#402C54">
             </div>
         </div>
@@ -392,6 +406,7 @@
                 <span class="color-code" id="code-pocket">#79521F</span>
             </div>
             <div class="color-input-container">
+                <div class="color-display"></div>
                 <input type="color" id="input-pocket" value="#79521F">
             </div>
         </div>
@@ -402,6 +417,7 @@
                 <span class="color-code" id="code-text">#79521F</span>
             </div>
             <div class="color-input-container">
+                <div class="color-display"></div>
                 <input type="color" id="input-text" value="#79521F">
             </div>
         </div>
@@ -420,18 +436,24 @@
     ];
 
     colorControls.forEach(([inputId, codeId, fillClass]) => {
-        const input = document.getElementById(inputId);
-        const code = document.getElementById(codeId);
-        const update = (color) => {
+        const input   = document.getElementById(inputId);
+        const code    = document.getElementById(codeId);
+        const display = input.parentElement.querySelector('.color-display');
+
+        const updateColor = (color) => {
             code.textContent = color.toUpperCase();
+            display.style.backgroundColor = color;
             document.querySelectorAll('.' + fillClass)
                 .forEach(el => el.setAttribute('fill', color));
         };
-        update(input.value);
-        input.addEventListener('input', e => update(e.target.value));
+
+        // 初始化
+        updateColor(input.value);
+
+        // 之後變更
+        input.addEventListener('input', e => updateColor(e.target.value));
     });
 </script>
 
 </body>
 </html>
-
