@@ -28,8 +28,10 @@
             font-weight: 700;
             margin-bottom: 30px;
             letter-spacing: 1px;
+            text-align: center;
         }
 
+        /* ---- 主版面：左右雙欄（電腦版） ---- */
         .layout-container {
             display: flex;
             gap: 40px;
@@ -39,7 +41,7 @@
             align-items: flex-start;
         }
 
-        /* 畫布區域容器 */
+        /* 左側畫布 */
         .canvas-wrapper {
             flex: 2;
             background: var(--panel-bg);
@@ -50,7 +52,6 @@
             justify-content: center;
         }
 
-        /* SVG 本體 */
         svg {
             width: 100%;
             height: auto;
@@ -59,7 +60,7 @@
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
         }
 
-        /* 控制面板容器 */
+        /* 右側控制器 */
         .controls-wrapper {
             flex: 1;
             max-width: 350px;
@@ -99,7 +100,6 @@
             font-weight: 400;
         }
 
-        /* 自訂顏色選擇器樣式 */
         .color-input-container {
             position: relative;
             width: 100%;
@@ -122,259 +122,315 @@
             transform-origin: center;
         }
 
-        /* SVG 內部樣式定義 */
-        /* 基礎輪廓線 */
+        /* SVG 樣式 */
         .outline-stroke {
             fill: none;
             stroke: rgba(0,0,0,0.15);
             stroke-width: 1;
             stroke-linejoin: round;
-            pointer-events: none; /* 讓滑鼠事件穿透到下方色塊 */
+            pointer-events: none;
         }
-        /* 拉鍊 */
+
         .zipper-stroke {
             fill: none;
             stroke: #2c2c2c;
             stroke-width: 1.5;
         }
-        /* 縫線細節 */
+
         .seam-stroke {
             fill: none;
             stroke: rgba(0,0,0,0.1);
             stroke-width: 0.75;
         }
-        /* 文字不可選取 */
+
         text { user-select: none; font-family: Arial, sans-serif; }
 
+        /* ==============================
+           📱 手機自適應（<=768px）
+           ============================== */
+        @media (max-width: 768px) {
+
+            body {
+                padding: 16px;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+                margin-bottom: 16px;
+            }
+
+            .layout-container {
+                flex-direction: column;
+                gap: 20px;
+                max-width: 100%;
+            }
+
+            .canvas-wrapper,
+            .controls-wrapper {
+                max-width: 100%;
+                width: 100%;
+                padding: 18px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            }
+
+            .controls-wrapper {
+                position: static;
+                top: auto;
+            }
+
+            svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .control-label {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .control-item {
+                margin-bottom: 16px;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-    <h2>LIV 車衣配色模擬</h2>
+<h2>LIV 車衣配色模擬）</h2>
 
-    <div class="layout-container">
-        
-        <div class="canvas-wrapper">
-            <svg viewBox="0 0 1000 550" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="bodyShadow" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" style="stop-color:black;stop-opacity:0.2"/>
-                        <stop offset="15%" style="stop-color:black;stop-opacity:0"/>
-                        <stop offset="85%" style="stop-color:black;stop-opacity:0"/>
-                        <stop offset="100%" style="stop-color:black;stop-opacity:0.2"/>
-                    </linearGradient>
-                    <linearGradient id="sleeveShadow" x1="0%" y1="0%" x2="0%" y2="100%">
-                         <stop offset="50%" style="stop-color:black;stop-opacity:0"/>
-                        <stop offset="100%" style="stop-color:black;stop-opacity:0.15"/>
-                    </linearGradient>
-                </defs>
+<div class="layout-container">
 
-                <!-- 正面 -->
-                <g transform="translate(50, 50)">
-                    
-                    <path d="M185,25 C220,35 260,35 295,25 L295,15 C260,25 220,25 185,15 Z" fill="#2c2c2c"/>
+    <!-- 左側 SVG 畫布 -->
+    <div class="canvas-wrapper">
+        <svg viewBox="0 0 1000 550" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="bodyShadow" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:black;stop-opacity:0.2"/>
+                    <stop offset="15%" style="stop-color:black;stop-opacity:0"/>
+                    <stop offset="85%" style="stop-color:black;stop-opacity:0"/>
+                    <stop offset="100%" style="stop-color:black;stop-opacity:0.2"/>
+                </linearGradient>
+                <linearGradient id="sleeveShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="50%" style="stop-color:black;stop-opacity:0"/>
+                    <stop offset="100%" style="stop-color:black;stop-opacity:0.15"/>
+                </linearGradient>
+            </defs>
 
-                    <!-- 袖子 -->
-                    <path class="fill-sleeve" d="M185,25 C140,40 100,75 70,150 L125,165 C145,120 165,100 175,145 C178,100 182,60 185,25 Z" fill="#838D3A"/>
-                    <path class="fill-sleeve" d="M295,25 C340,40 380,75 410,150 L355,165 C335,120 315,100 305,145 C302,100 298,60 295,25 Z" fill="#8D3A6A"/>
-                    
-                    <path d="M185,25 C140,40 100,75 70,150 L125,165 C145,120 165,100 175,145 Z" fill="url(#sleeveShadow)" pointer-events="none"/>
-                    <path d="M295,25 C340,40 380,75 410,150 L355,165 C335,120 315,100 305,145 Z" fill="url(#sleeveShadow)" pointer-events="none"/>
+            <!-- 正面 -->
+            <g transform="translate(50, 50)">
+                <!-- 領口上方黑邊 -->
+                <path d="M185,25 C220,35 260,35 295,25 L295,15 C260,25 220,25 185,15 Z" fill="#2c2c2c"/>
 
-                    <!-- 主體（含腋下） -->
-                    <path class="fill-body" d="M175,145 C182,60 185,25 185,25 C220,35 260,35 295,25 C295,25 298,60 305,145 L320,375 C265,390 215,390 160,375 L175,145 Z" fill="#513B7C"/>
-                    
-                    <path d="M175,145 C182,60 185,25 185,25 C220,35 260,35 295,25 C295,25 298,60 305,145 L320,375 C265,390 215,390 160,375 L175,145 Z" fill="url(#bodyShadow)" pointer-events="none"/>
+                <!-- 袖子 -->
+                <path class="fill-sleeve" d="M185,25 C140,40 100,75 70,150 L125,165 C145,120 165,100 175,145 C178,100 182,60 185,25 Z" fill="#79521F"/>
+                <path class="fill-sleeve" d="M295,25 C340,40 380,75 410,150 L355,165 C335,120 315,100 305,145 C302,100 298,60 295,25 Z" fill="#79521F"/>
+                <path d="M185,25 C140,40 100,75 70,150 L125,165 C145,120 165,100 175,145 Z" fill="url(#sleeveShadow)" pointer-events="none"/>
+                <path d="M295,25 C340,40 380,75 410,150 L355,165 C335,120 315,100 305,145 Z" fill="url(#sleeveShadow)" pointer-events="none"/>
 
-                    <!-- 側面色塊（腰身只在兩側，不是一整圈） -->
-                    <path class="fill-side" d="M175,145 C150,210 175,260 160,375 L145,375 C165,260 135,210 160,150 C165,148 170,146 175,145 Z" fill="#8C6239"/>
-                    <path class="fill-side" d="M305,145 C330,210 305,260 320,375 L335,375 C315,260 345,210 320,150 C315,148 310,146 305,145 Z" fill="#8C6239"/>
+                <!-- 主體（含腋下） -->
+                <path class="fill-body" d="M175,145 C182,60 185,25 185,25 C220,35 260,35 295,25 C295,25 298,60 305,145 L320,375 C265,390 215,390 160,375 L175,145 Z" fill="#402C54"/>
+                <path d="M175,145 C182,60 185,25 185,25 C220,35 260,35 295,25 C295,25 298,60 305,145 L320,375 C265,390 215,390 160,375 L175,145 Z" fill="url(#bodyShadow)" pointer-events="none"/>
 
-                    <!-- 腰身直排 LIV（左右各一） -->
-                    <text class="fill-text"
-                          x="170" y="285"
-                          transform="rotate(-90 170 285)"
-                          font-weight="900" font-size="28"
-                          letter-spacing="2"
-                          style="font-style: italic;">LIV</text>
+                <!-- 側面色塊 -->
+                <path class="fill-side" d="M175,145 C150,210 175,260 160,375 L145,375 C165,260 135,210 160,150 C165,148 170,146 175,145 Z" fill="#79521F"/>
+                <path class="fill-side" d="M305,145 C330,210 305,260 320,375 L335,375 C315,260 345,210 320,150 C315,148 310,146 305,145 Z" fill="#79521F"/>
 
-                    <text class="fill-text"
-                          x="310" y="285"
-                          transform="rotate(-90 310 285)"
-                          font-weight="900" font-size="28"
-                          letter-spacing="2"
-                          style="font-style: italic;">LIV</text>
+                <!-- 腰身直排 LIV（左右） -->
+                <text class="fill-text"
+                      x="170" y="285"
+                      transform="rotate(-90 170 285)"
+                      font-weight="900" font-size="26"
+                      letter-spacing="2"
+                      style="font-style: italic;">LIV</text>
+                <text class="fill-text"
+                      x="310" y="285"
+                      transform="rotate(-90 310 285)"
+                      font-weight="900" font-size="26"
+                      letter-spacing="2"
+                      style="font-style: italic;">LIV</text>
 
-                    <!-- 領口 -->
-                    <path class="fill-collar" d="M185,25 C220,35 260,35 295,25 L295,12 C260,22 220,22 185,12 Z" fill="#3E2E5E"/>
+                <!-- 領口 -->
+                <path class="fill-collar" d="M185,25 C220,35 260,35 295,25 L295,12 C260,22 220,22 185,12 Z" fill="#402C54"/>
 
-                    <!-- 拉鍊 -->
-                    <line x1="240" y1="12" x2="240" y2="383" class="zipper-stroke"/>
+                <!-- 拉鍊 -->
+                <line x1="240" y1="12" x2="240" y2="383" class="zipper-stroke"/>
 
-                    <!-- 下擺 -->
-                    <path d="M145,375 C215,390 265,390 335,375" class="seam-stroke"/>
-                    <path d="M145,375 C215,390 265,390 335,375 L335,383 C265,398 215,398 145,383 Z" fill="#2c2c2c"/>
+                <!-- 下擺 -->
+                <path d="M145,375 C215,390 265,390 335,375" class="seam-stroke"/>
+                <path d="M145,375 C215,390 265,390 335,375 L335,383 C265,398 215,398 145,383 Z" fill="#2c2c2c"/>
 
-                    <!-- 前胸 logo -->
-                    <g transform="translate(270, 70) scale(0.7)">
-                        <rect x="0" y="0" width="40" height="45" rx="4" fill="white"/>
-                        <path d="M10,10 L10,30 L20,15 L20,30 L30,10" fill="none" stroke="#838D3A" stroke-width="5" stroke-linejoin="round"/>
-                        <rect x="0" y="33" width="40" height="12" rx="2" fill="white"/>
-                    </g>
-
-                    <!-- 洗標 -->
-                    <g transform="translate(150, 290) scale(0.6)">
-                        <rect x="0" y="0" width="40" height="25" fill="white" stroke="#ddd" stroke-width="1"/>
-                        <rect x="2" y="18" width="10" height="5" fill="#333"/>
-                        <line x1="5" y1="5" x2="35" y2="5" stroke="#999" stroke-width="1"/>
-                        <line x1="5" y1="10" x2="25" y2="10" stroke="#999" stroke-width="1"/>
-                    </g>
-
-                    <!-- 外輪廓 -->
-                    <path class="outline-stroke" d="M185,12 L185,25 C140,40 100,75 70,150 L125,165 C135,140 150,125 160,150 C135,210 165,260 145,375 L145,383 C215,398 265,398 335,383 L335,375 C315,260 345,210 320,150 C330,125 345,140 355,165 L410,150 C380,75 340,40 295,25 L295,12 C260,22 220,22 185,12 Z"/>
-
-                    <text x="240" y="430" text-anchor="middle" fill="#999" font-weight="600">正面 FRONT</text>
+                <!-- 前胸 logo -->
+                <g transform="translate(270, 70) scale(0.7)">
+                    <rect x="0" y="0" width="40" height="45" rx="4" fill="white"/>
+                    <path d="M10,10 L10,30 L20,15 L20,30 L30,10" fill="none" stroke="#2c2c2c" stroke-width="5" stroke-linejoin="round"/>
+                    <rect x="0" y="33" width="40" height="12" rx="2" fill="white"/>
                 </g>
 
-                <!-- 背面 -->
-                <g transform="translate(550, 50)">
-                     
-                    <!-- 袖子 -->
-                    <path class="fill-sleeve" d="M185,25 C140,40 100,75 70,150 L125,165 C145,120 165,100 175,145 C178,100 182,60 185,25 Z" fill="#8C6239"/>
-                    <path class="fill-sleeve" d="M295,25 C340,40 380,75 410,150 L355,165 C335,120 315,100 305,145 C302,100 298,60 295,25 Z" fill="#8C6239"/>
-                    <path d="M185,25 C140,40 100,75 70,150 L125,165 C145,120 165,100 175,145 Z" fill="url(#sleeveShadow)" pointer-events="none"/>
-                    <path d="M295,25 C340,40 380,75 410,150 L355,165 C335,120 315,100 305,145 Z" fill="url(#sleeveShadow)" pointer-events="none"/>
-
-                    <!-- 主體 -->
-                    <path class="fill-body" d="M175,145 C182,60 185,25 185,25 C220,35 260,35 295,25 C295,25 298,60 305,145 L320,395 C265,410 215,410 160,395 L175,145 Z" fill="#513B7C"/>
-                    <path d="M175,145 C182,60 185,25 185,25 C220,35 260,35 295,25 C295,25 298,60 305,145 L320,395 C265,410 215,410 160,395 L175,145 Z" fill="url(#bodyShadow)" pointer-events="none"/>
-
-                    <!-- 側面色塊 -->
-                    <path class="fill-side" d="M175,145 C150,210 175,260 160,395 L145,395 C165,260 135,210 160,150 C165,148 170,146 175,145 Z" fill="#8C6239"/>
-                    <path class="fill-side" d="M305,145 C330,210 305,260 320,395 L335,395 C315,260 345,210 320,150 C315,148 310,146 305,145 Z" fill="#8C6239"/>
-
-                    <!-- 領口 -->
-                    <path class="fill-collar" d="M185,25 C220,35 260,35 295,25 L295,8 C260,18 220,18 185,8 Z" fill="#3E2E5E"/>
-
-                    <!-- 後口袋：預設改成咖啡色 #8D3A6A -->
-                    <g>
-                        <path class="fill-pocket" d="M150,275 C215,285 265,285 330,275 L330,395 C265,410 215,410 150,395 Z" fill="#8C6239" opacity="0.95"/>
-                        <path d="M150,275 C215,285 265,285 330,275" class="seam-stroke" stroke-width="1"/>
-                        <line x1="210" y1="280" x2="210" y2="400" class="seam-stroke" stroke-width="1"/>
-                        <line x1="270" y1="280" x2="270" y2="400" class="seam-stroke" stroke-width="1"/>
-                        
-                        <!-- 背面 LIV：跟腰身共用 fill-text，由 Logo 控制器獨立控制 -->
-                        <text class="fill-text" x="240" y="340" text-anchor="middle" font-weight="900" font-size="32" fill="#8C6239" letter-spacing="2" style="font-style: italic;">LIV</text>
-                        
-                        <rect x="210" y="400" width="60" height="4" fill="#cfcfcf" rx="2"/>
-                    </g>
-                    
-                    <!-- 下擺 -->
-                    <path d="M145,395 C215,410 265,410 335,395 L335,403 C265,418 215,418 145,403 Z" fill="#2c2c2c"/>
-
-                    <!-- 外輪廓 -->
-                    <path class="outline-stroke" d="M185,8 L185,25 C140,40 100,75 70,150 L125,165 C135,140 150,125 160,150 C135,210 165,260 145,395 L145,403 C215,418 265,418 335,403 L335,395 C315,260 345,210 320,150 C330,125 345,140 355,165 L410,150 C380,75 340,40 295,25 L295,8 C260,18 220,18 185,8 Z"/>
-
-                    <text x="240" y="450" text-anchor="middle" fill="#999" font-weight="600">背面 BACK</text>
+                <!-- 洗標 -->
+                <g transform="translate(150, 290) scale(0.6)">
+                    <rect x="0" y="0" width="40" height="25" fill="white" stroke="#ddd" stroke-width="1"/>
+                    <rect x="2" y="18" width="10" height="5" fill="#333"/>
+                    <line x1="5" y1="5" x2="35" y2="5" stroke="#999" stroke-width="1"/>
+                    <line x1="5" y1="10" x2="25" y2="10" stroke="#999" stroke-width="1"/>
                 </g>
-            </svg>
+
+                <!-- 外輪廓 -->
+                <path class="outline-stroke" d="M185,12 L185,25 C140,40 100,75 70,150 L125,165 C135,140 150,125 160,150 C135,210 165,260 145,375 L145,383 C215,398 265,398 335,383 L335,375 C315,260 345,210 320,150 C330,125 345,140 355,165 L410,150 C380,75 340,40 295,25 L295,12 C260,22 220,22 185,12 Z"/>
+
+                <text x="240" y="430" text-anchor="middle" fill="#999" font-weight="600">正面 FRONT</text>
+            </g>
+
+            <!-- 背面 -->
+            <g transform="translate(550, 50)">
+                <!-- 袖子 -->
+                <path class="fill-sleeve" d="M185,25 C140,40 100,75 70,150 L125,165 C145,120 165,100 175,145 C178,100 182,60 185,25 Z" fill="#79521F"/>
+                <path class="fill-sleeve" d="M295,25 C340,40 380,75 410,150 L355,165 C335,120 315,100 305,145 C302,100 298,60 295,25 Z" fill="#79521F"/>
+                <path d="M185,25 C140,40 100,75 70,150 L125,165 C145,120 165,100 175,145 Z" fill="url(#sleeveShadow)" pointer-events="none"/>
+                <path d="M295,25 C340,40 380,75 410,150 L355,165 C335,120 315,100 305,145 Z" fill="url(#sleeveShadow)" pointer-events="none"/>
+
+                <!-- 主體 -->
+                <path class="fill-body" d="M175,145 C182,60 185,25 185,25 C220,35 260,35 295,25 C295,25 298,60 305,145 L320,395 C265,410 215,410 160,395 L175,145 Z" fill="#402C54"/>
+                <path d="M175,145 C182,60 185,25 185,25 C220,35 260,35 295,25 C295,25 298,60 305,145 L320,395 C265,410 215,410 160,395 L175,145 Z" fill="url(#bodyShadow)" pointer-events="none"/>
+
+                <!-- 側面色塊 -->
+                <path class="fill-side" d="M175,145 C150,210 175,260 160,395 L145,395 C165,260 135,210 160,150 C165,148 170,146 175,145 Z" fill="#79521F"/>
+                <path class="fill-side" d="M305,145 C330,210 305,260 320,395 L335,395 C315,260 345,210 320,150 C315,148 310,146 305,145 Z" fill="#79521F"/>
+
+                <!-- 領口 -->
+                <path class="fill-collar" d="M185,25 C220,35 260,35 295,25 L295,8 C260,18 220,18 185,8 Z" fill="#402C54"/>
+
+                <!-- 側邊腰身 LIV（背面） -->
+                <text class="fill-text"
+                      x="170" y="285"
+                      transform="rotate(-90 170 285)"
+                      font-weight="900" font-size="26"
+                      letter-spacing="2"
+                      style="font-style: italic;">LIV</text>
+                <text class="fill-text"
+                      x="310" y="285"
+                      transform="rotate(-90 310 285)"
+                      font-weight="900" font-size="26"
+                      letter-spacing="2"
+                      style="font-style: italic;">LIV</text>
+
+                <!-- 後口袋：咖啡色 -->
+                <g>
+                    <path class="fill-pocket" d="M150,275 C215,285 265,285 330,275 L330,395 C265,410 215,410 150,395 Z" fill="#79521F" opacity="0.95"/>
+                    <path d="M150,275 C215,285 265,285 330,275" class="seam-stroke" stroke-width="1"/>
+                    <line x1="210" y1="280" x2="210" y2="400" class="seam-stroke" stroke-width="1"/>
+                    <line x1="270" y1="280" x2="270" y2="400" class="seam-stroke" stroke-width="1"/>
+                    
+                    <!-- 背面 LIV：同樣使用 fill-text -->
+                    <text class="fill-text" x="240" y="340" text-anchor="middle"
+                          font-weight="900" font-size="32"
+                          fill="#79521F" letter-spacing="2"
+                          style="font-style: italic;">LIV</text>
+
+                    <rect x="210" y="400" width="60" height="4" fill="#cfcfcf" rx="2"/>
+                </g>
+
+                <!-- 下擺 -->
+                <path d="M145,395 C215,410 265,410 335,395 L335,403 C265,418 215,418 145,403 Z" fill="#2c2c2c"/>
+
+                <!-- 外輪廓 -->
+                <path class="outline-stroke" d="M185,8 L185,25 C140,40 100,75 70,150 L125,165 C135,140 150,125 160,150 C135,210 165,260 145,395 L145,403 C215,418 265,418 335,403 L335,395 C315,260 345,210 320,150 C330,125 345,140 355,165 L410,150 C380,75 340,40 295,25 L295,8 C260,18 220,18 185,8 Z"/>
+
+                <text x="240" y="450" text-anchor="middle" fill="#999" font-weight="600">背面 BACK</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 右側顏色控制面板 -->
+    <div class="controls-wrapper">
+        <div class="control-header">配色選擇 (Color Customization)</div>
+
+        <div class="control-item">
+            <div class="control-label">
+                <span>主體顏色 (Main Body)</span>
+                <span class="color-code" id="code-body">#402C54</span>
+            </div>
+            <div class="color-input-container">
+                <input type="color" id="input-body" value="#402C54">
+            </div>
         </div>
 
-        <div class="controls-wrapper">
-            <div class="control-header">配色選擇 (Color Customization)</div>
-
-            <div class="control-item">
-                <div class="control-label">
-                    <span>主體顏色 (Main Body)</span>
-                    <span class="color-code" id="code-body">#513B7C</span>
-                </div>
-                <div class="color-input-container">
-                    <input type="color" id="input-body" value="#513B7C">
-                </div>
+        <div class="control-item">
+            <div class="control-label">
+                <span>袖子顏色 (Sleeves)</span>
+                <span class="color-code" id="code-sleeve">#79521F</span>
             </div>
-
-            <div class="control-item">
-                <div class="control-label">
-                    <span>袖子顏色 (Sleeves)</span>
-                    <span class="color-code" id="code-sleeve">#8C6239</span>
-                </div>
-                <div class="color-input-container">
-                    <input type="color" id="input-sleeve" value="#8C6239">
-                </div>
+            <div class="color-input-container">
+                <input type="color" id="input-sleeve" value="#79521F">
             </div>
+        </div>
 
-            <div class="control-item">
-                <div class="control-label">
-                    <span>側面色塊 (Side Panels)</span>
-                    <span class="color-code" id="code-side">#8C6239</span>
-                </div>
-                <div class="color-input-container">
-                    <input type="color" id="input-side" value="#8C6239">
-                </div>
+        <div class="control-item">
+            <div class="control-label">
+                <span>側面色塊 (Side Panels)</span>
+                <span class="color-code" id="code-side">#79521F</span>
             </div>
-
-            <div class="control-item">
-                <div class="control-label">
-                    <span>領口顏色 (Collar)</span>
-                    <span class="color-code" id="code-collar">#3E2E5E</span>
-                </div>
-                <div class="color-input-container">
-                    <input type="color" id="input-collar" value="#3E2E5E">
-                </div>
+            <div class="color-input-container">
+                <input type="color" id="input-side" value="#79521F">
             </div>
+        </div>
 
-            <div class="control-item">
-                <div class="control-label">
-                    <span>後口袋 (Rear Pockets)</span>
-                    <span class="color-code" id="code-pocket">#8C6239</span>
-                </div>
-                <div class="color-input-container">
-                    <input type="color" id="input-pocket" value="#8C6239">
-                </div>
+        <div class="control-item">
+            <div class="control-label">
+                <span>領口顏色 (Collar)</span>
+                <span class="color-code" id="code-collar">#402C54</span>
             </div>
-
-             <div class="control-item" style="border-top: 1px solid #eee; padding-top: 20px;">
-                <div class="control-label">
-                    <span>Logo 字樣 (Text)</span>
-                    <span class="color-code" id="code-text">#8C6239</span>
-                </div>
-                <div class="color-input-container">
-                    <input type="color" id="input-text" value="#8C6239">
-                </div>
+            <div class="color-input-container">
+                <input type="color" id="input-collar" value="#402C54">
             </div>
+        </div>
 
+        <div class="control-item">
+            <div class="control-label">
+                <span>後口袋 (Rear Pockets)</span>
+                <span class="color-code" id="code-pocket">#79521F</span>
+            </div>
+            <div class="color-input-container">
+                <input type="color" id="input-pocket" value="#79521F">
+            </div>
+        </div>
+
+        <div class="control-item" style="border-top: 1px solid #eee; padding-top: 20px;">
+            <div class="control-label">
+                <span>Logo 字樣 (Text)</span>
+                <span class="color-code" id="code-text">#79521F</span>
+            </div>
+            <div class="color-input-container">
+                <input type="color" id="input-text" value="#79521F">
+            </div>
         </div>
     </div>
 
-    <script>
-        // 定義顏色控制器的對應關係
-        // [Input ID, Color Code Display ID, SVG Class Name]
-        const colorControls = [
-            ['input-body', 'code-body', 'fill-body'],
-            ['input-sleeve', 'code-sleeve', 'fill-sleeve'],
-            ['input-side', 'code-side', 'fill-side'],
-            ['input-collar', 'code-collar', 'fill-collar'],
-            ['input-pocket', 'code-pocket', 'fill-pocket'],
-            ['input-text', 'code-text', 'fill-text']
-        ];
+</div>
 
-        // 初始化所有控制器
-        colorControls.forEach(control => {
-            const [inputId, codeId, fillClass] = control;
-            const inputElement = document.getElementById(inputId);
-            const codeElement = document.getElementById(codeId);
-            const svgElements = document.querySelectorAll('.' + fillClass);
+<script>
+    const colorControls = [
+        ['input-body', 'code-body', 'fill-body'],
+        ['input-sleeve', 'code-sleeve', 'fill-sleeve'],
+        ['input-side', 'code-side', 'fill-side'],
+        ['input-collar', 'code-collar', 'fill-collar'],
+        ['input-pocket', 'code-pocket', 'fill-pocket'],
+        ['input-text', 'code-text', 'fill-text']
+    ];
 
-            // 綁定輸入事件
-            inputElement.addEventListener('input', (e) => {
-                const newColor = e.target.value;
-                // 更新色碼顯示
-                codeElement.textContent = newColor.toUpperCase();
-                // 更新所有對應 SVG 元素的填充色
-                svgElements.forEach(el => el.setAttribute('fill', newColor));
-            });
-        });
-    </script>
+    colorControls.forEach(([inputId, codeId, fillClass]) => {
+        const input = document.getElementById(inputId);
+        const code = document.getElementById(codeId);
+        const update = (color) => {
+            code.textContent = color.toUpperCase();
+            document.querySelectorAll('.' + fillClass)
+                .forEach(el => el.setAttribute('fill', color));
+        };
+        update(input.value);
+        input.addEventListener('input', e => update(e.target.value));
+    });
+</script>
+
 </body>
 </html>
-
